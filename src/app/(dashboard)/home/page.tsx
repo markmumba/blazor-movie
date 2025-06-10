@@ -3,7 +3,6 @@ import movieService from "@/lib/api/movieService";
 import { Movie } from "@/lib/api/types";
 import { Play, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
-import Navigation from "../../components/custom-ui/shared/navigation";
 import MovieSection from "@/components/custom-ui/home/moviesection";
 
 function Homepage() {
@@ -74,7 +73,6 @@ function Homepage() {
     return (
         <>
             <div className="min-h-screen bg-background">
-                <Navigation />
                 <section className="py-8 md:py-12 lg:py-16">
                     <div className="container mx-auto max-w-7xl px-4 space-y-4 text-center">
                         <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">

@@ -8,12 +8,12 @@ class MovieService {
 
 
     constructor() {
-        if (!process.env.API_READ_ACCESS_TOKEN) {
-            throw new Error('API_READ_ACCESS_TOKEN environment variable is required');
-        }
-        this.accessToken = process.env.API_READ_ACCESS_TOKEN;
-    }
+        this.accessToken = process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN || '';
 
+        if (!this.accessToken) {
+            console.warn('TMDB Access Token not found. Please add NEXT_PUBLIC_TMDB_ACCESS_TOKEN to your environment variables.');
+        }
+    }
     private async makeRequest<T>(endpoint: string): Promise<T> {
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: 'GET',
@@ -102,12 +102,12 @@ class MovieService {
             throw error;
         }
     }
-    async getMovieDetails(movieId: number): Promise<ApiResponse<MovieDetails>> {
+    async getMovieDetails(movieId: number): Promise<MovieDetails> {
         const endpoint = `/movie/${movieId}${this.buildQueryParams({
             append_to_response: 'credits,videos'
         })}`;
         try {
-            return await this.makeRequest<ApiResponse<MovieDetails>>(endpoint)
+            return await this.makeRequest<MovieDetails>(endpoint)
         } catch (error) {
             console.error('Error fetching movie details:', error);
             throw error;

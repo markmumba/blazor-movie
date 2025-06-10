@@ -10,7 +10,7 @@ export default function Navigation() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
                         <Film className="h-6 w-6 text-primary" />
-                        <h1 className="text-xl font-bold">MovieApp</h1>
+                        <h1 className="text-xl font-bold">Blazor Movies</h1>
                     </Link>
 
                     {/* Desktop Navigation */}

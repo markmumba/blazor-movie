@@ -4,65 +4,31 @@ import movieService from "@/lib/api/movieService";
 import { CastMember, MovieDetails } from "@/lib/api/types";
 import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
 import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 
 interface PageProps {
-    params: Promise<{
+    params: {
         id: string;
-    }>
+    }
 }
 
 function MovieDetailsPage({ params }: PageProps) {
-
-
-    const { id } = use(params);
+    const { id } = params;
 
     const [movie, setMovie] = useState<MovieDetails | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
-                setIsLoading(true);
                 const movieDetails = await movieService.getMovieDetails(Number(id));
                 setMovie(movieDetails);
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'An error occurred while fetching movie details');
-            } finally {
-                setIsLoading(false);
             }
         }
         fetchMovieDetails();
-    }, [id])
-
-    const LoadingSkeleton = () => (
-        <div className="min-h-screen bg-background">
-            <div className="relative">
-                <div className="aspect-[16/9] bg-muted animate-pulse" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
-            </div>
-
-            <div className="container -mt-32 relative z-10 space-y-8">
-                <div className="grid md:grid-cols-[300px_1fr] gap-8">
-                    <div className="aspect-[2/3] bg-muted animate-pulse rounded-lg" />
-                    <div className="space-y-4">
-                        <div className="h-8 bg-muted animate-pulse rounded w-3/4" />
-                        <div className="h-4 bg-muted animate-pulse rounded w-1/2" />
-                        <div className="space-y-2">
-                            <div className="h-4 bg-muted animate-pulse rounded" />
-                            <div className="h-4 bg-muted animate-pulse rounded" />
-                            <div className="h-4 bg-muted animate-pulse rounded w-4/5" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-
-    if (isLoading) return <LoadingSkeleton />;
-
+    }, [id]);
 
     if (error || !movie) {
         return (
@@ -248,7 +214,7 @@ function MovieDetailsPage({ params }: PageProps) {
                 )}
             </div>
         </div>
-    )
+    );
 }
 
 export default MovieDetailsPage;

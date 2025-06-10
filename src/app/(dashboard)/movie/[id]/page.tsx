@@ -1,7 +1,8 @@
 'use client';
 import CastCard from "@/components/custom-ui/movie/castcard";
+import MovieLoadingSkeleton from "@/components/custom-ui/movie/movieloading";
 import movieService from "@/lib/api/movieService";
-import { CastMember, MovieDetails } from "@/lib/api/types";
+import {  MovieDetails } from "@/lib/api/types";
 import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
 import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,20 +17,27 @@ function MovieDetailsPage({ params }: PageProps) {
     const { id } = params;
 
     const [movie, setMovie] = useState<MovieDetails | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
+                setIsLoading(true);
                 const movieDetails = await movieService.getMovieDetails(Number(id));
                 setMovie(movieDetails);
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'An error occurred while fetching movie details');
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchMovieDetails();
     }, [id]);
 
+    if (isLoading) {
+        return <MovieLoadingSkeleton />;
+    }
     if (error || !movie) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4">
@@ -47,6 +55,7 @@ function MovieDetailsPage({ params }: PageProps) {
             </div>
         );
     }
+
 
     return (
         <div className="min-h-screen bg-background">

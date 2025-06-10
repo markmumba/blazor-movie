@@ -6,15 +6,12 @@ import AnimatedPosters from './animated-posters';
 const HeroSection = () => {
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-100 overflow-hidden">
-            {/* Background Pattern */}
             <div className="absolute inset-0 opacity-30">
                 <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
             </div>
 
-            {/* Animated Movie Posters */}
             <AnimatedPosters />
 
-            {/* Light Background Gradient */}
             <div className="absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-t from-transparent via-white/95 to-transparent" />
 
             <div className="relative z-50 container mx-auto px-4 flex flex-col items-center justify-end min-h-screen pb-48 text-center">

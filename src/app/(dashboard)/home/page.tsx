@@ -4,16 +4,19 @@ import { Movie } from "@/lib/api/types";
 import { Play, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import MovieSection from "@/components/custom-ui/home/moviesection";
+import HomeLoadingSkeleton from "@/components/custom-ui/home/homeloading";
 
 function Homepage() {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
     const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
     const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
+                setIsLoading(true);
                 const [popularResponse, topRatedResponse, nowPlayingResponse] = await Promise.all([
                     movieService.getPopularMovies(),
                     movieService.getTopRatedMovies(),
@@ -25,6 +28,8 @@ function Homepage() {
                 setNowPlayingMovies(nowPlayingResponse.results);
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'An error occurred while fetching movies');
+            } finally {
+                setIsLoading(false);
             }
         };
         
@@ -47,6 +52,10 @@ function Homepage() {
                 </div>
             </div>
         );
+    }
+
+    if (isLoading) {
+        return <HomeLoadingSkeleton />;
     }
 
     return (

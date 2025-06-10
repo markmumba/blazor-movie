@@ -15,6 +15,9 @@ class MovieService {
         }
     }
     private async makeRequest<T>(endpoint: string): Promise<T> {
+        // Add artificial delay to demonstrate loading state
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: 'GET',
             headers: {

@@ -84,7 +84,6 @@ function MovieDetailsPage({ params }: PageProps) {
 
     return (
         <div className="min-h-screen bg-background">
-            {/* Hero Section with Backdrop */}
             <div className="relative">
                 <div className="aspect-[16/9] overflow-hidden">
                     <img
@@ -95,7 +94,6 @@ function MovieDetailsPage({ params }: PageProps) {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
 
-                {/* Navigation */}
                 <div className="absolute top-4 left-4 z-20">
                     <button
                         onClick={() => window.history.back()}
@@ -106,11 +104,8 @@ function MovieDetailsPage({ params }: PageProps) {
                 </div>
             </div>
 
-            {/* Main Content */}
             <div className="container mx-auto max-w-7xl px-4 -mt-32 relative z-10 space-y-12 pb-12">
-                {/* Movie Info Section */}
                 <div className="grid md:grid-cols-[300px_1fr] gap-8">
-                    {/* Poster */}
                     <div className="mx-auto md:mx-0">
                         <div className="aspect-[2/3] overflow-hidden rounded-lg shadow-2xl ring-1 ring-border">
                             <img
@@ -121,7 +116,6 @@ function MovieDetailsPage({ params }: PageProps) {
                         </div>
                     </div>
 
-                    {/* Details */}
                     <div className="space-y-8">
                         <div className="space-y-3">
                             <h1 className="text-4xl font-bold tracking-tight">{movie.title}</h1>
@@ -130,7 +124,6 @@ function MovieDetailsPage({ params }: PageProps) {
                             )}
                         </div>
 
-                        {/* Rating and Meta */}
                         <div className="flex flex-wrap items-center gap-4">
                             <div className="inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold bg-primary text-primary-foreground">
                                 <Star className="w-4 h-4 fill-current mr-1" />
@@ -146,7 +139,6 @@ function MovieDetailsPage({ params }: PageProps) {
                             </div>
                         </div>
 
-                        {/* Genres */}
                         <div className="flex flex-wrap gap-2">
                             {movie.genres.map((genre) => (
                                 <span
@@ -158,13 +150,11 @@ function MovieDetailsPage({ params }: PageProps) {
                             ))}
                         </div>
 
-                        {/* Overview */}
                         <div className="space-y-3">
                             <h2 className="text-xl font-semibold">Overview</h2>
                             <p className="text-muted-foreground leading-relaxed">{movie.overview}</p>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="flex flex-wrap gap-3 pt-2">
                             <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                                 <Play className="h-4 w-4 mr-2" />
@@ -184,9 +174,7 @@ function MovieDetailsPage({ params }: PageProps) {
                     </div>
                 </div>
 
-                {/* Additional Info */}
                 <div className="grid md:grid-cols-2 gap-8 pt-8 border-t">
-                    {/* Movie Facts */}
                     <div className="space-y-6">
                         <h2 className="text-xl font-semibold">Movie Facts</h2>
                         <div className="space-y-4">
@@ -211,7 +199,6 @@ function MovieDetailsPage({ params }: PageProps) {
                         </div>
                     </div>
 
-                    {/* Production Companies */}
                     <div className="space-y-6">
                         <h2 className="text-xl font-semibold">Production</h2>
                         <div className="space-y-4">
@@ -235,7 +222,6 @@ function MovieDetailsPage({ params }: PageProps) {
                     </div>
                 </div>
 
-                {/* Cast */}
                 {movie.credits?.cast && (
                     <div className="space-y-6 pt-8 border-t">
                         <h2 className="text-xl font-semibold">Cast</h2>
@@ -247,7 +233,6 @@ function MovieDetailsPage({ params }: PageProps) {
                     </div>
                 )}
 
-                {/* Crew */}
                 {movie.credits?.crew && (
                     <div className="space-y-6 pt-8 border-t">
                         <h2 className="text-xl font-semibold">Key Crew</h2>

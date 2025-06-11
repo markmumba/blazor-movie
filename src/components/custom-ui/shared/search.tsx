@@ -1,9 +1,9 @@
 import movieService from "@/lib/api/movieService";
 import { Movie } from "@/lib/api/types";
 import { formatYear } from "@/lib/utils";
-import { Clock, Link, Search, TrendingUp } from "lucide-react";
+import { Clock, Link as LinkIcon, Search, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
+import Link from "next/link";
 
 function SearchComponent({ className }: { className?: string }) {
     const [query, setQuery] = useState("");
@@ -35,30 +35,26 @@ function SearchComponent({ className }: { className?: string }) {
     }, []);
 
     useEffect(() => {
-        if (debounceRef.current) {
-            clearTimeout(debounceRef.current);
-            if (query.trim().length >= 2) {
-                console.log('Searching for:', query.trim());
-                debounceRef.current = setTimeout(async () => {
-                    try {
-                        setIsLoading(true);
-                        console.log('Making API request...');
-                        const response = await movieService.searchMovies({ query: query.trim() });
-                        console.log('Search response:', response);
-                        setResults(response.results.slice(0, 8));
-                        setIsOpen(true);
-                    } catch (error) {
-                        console.error("Error searching movies:", error);
-                        setResults([]);
-                    } finally {
-                        setIsLoading(false);
-                    }
-                }, 500);
+        if (query.trim().length >= 2) {
+            if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
             }
+            debounceRef.current = setTimeout(async () => {
+                try {
+                    setIsLoading(true);
+                    const response = await movieService.searchMovies({ query: query.trim() });
+                    setResults(response.results.slice(0, 8));
+                    setIsOpen(true);
+                } catch (error) {
+                    setResults([]);
+                } finally {
+                    setIsLoading(false);
+                }
+            }, 500);
         } else {
             setResults([]);
-            if (query.trim().length === 2) {
-                setIsOpen(false)
+            if (query.trim().length === 0) {
+                setIsOpen(false);
             }
         }
 
@@ -71,13 +67,16 @@ function SearchComponent({ className }: { className?: string }) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+        console.log('Input changed:', value);
         setQuery(value);
 
         if (value.trim().length > 0) {
             setIsOpen(true);
         }
     }
+
     const handleSelectMovie = (movie: Movie) => {
+        console.log('Movie selected:', movie.title);
         const newRecentSearches = [movie.title, ...recentSearches.filter(s => s !== movie.title)].slice(0, 5);
         setRecentSearches(newRecentSearches)
         localStorage.setItem('recent-movie-searches', JSON.stringify(newRecentSearches));
@@ -93,6 +92,7 @@ function SearchComponent({ className }: { className?: string }) {
     }
 
     const clearRecentSearches = () => {
+        console.log('Clearing recent searches');
         setRecentSearches([]);
         localStorage.removeItem('recent-movie-searches');
     };

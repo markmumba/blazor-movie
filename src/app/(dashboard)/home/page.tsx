@@ -4,7 +4,7 @@ import { Movie } from "@/lib/api/types";
 import { Play, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import MovieSection from "@/components/custom-ui/home/moviesection";
-import HomeLoadingSkeleton from "@/components/custom-ui/home/homeloading";
+import HomeLoadingSkeleton from "@/components/custom-ui/skeletons/homeskeleton";
 
 function Homepage() {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([]);

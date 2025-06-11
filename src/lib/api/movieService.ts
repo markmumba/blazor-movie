@@ -16,7 +16,7 @@ class MovieService {
     }
     private async makeRequest<T>(endpoint: string): Promise<T> {
         // Add artificial delay to demonstrate loading state
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // await new Promise(resolve => setTimeout(resolve, 2000));
 
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: 'GET',
@@ -98,6 +98,7 @@ class MovieService {
             year,
             include_adult: false,
         })}`
+        console.log(endpoint)
         try {
             return await this.makeRequest<ApiResponse<Movie>>(endpoint);
         } catch (error) {
@@ -105,6 +106,7 @@ class MovieService {
             throw error;
         }
     }
+
     async getMovieDetails(movieId: number): Promise<MovieDetails> {
         const endpoint = `/movie/${movieId}${this.buildQueryParams({
             append_to_response: 'credits,videos'
@@ -117,15 +119,30 @@ class MovieService {
         }
     }
 
-    async getGenre(): Promise<{ genre: Genre[] }> {
+    async getGenre(): Promise<{ genres: Genre[] }> {
         const endpoint = `/genre/movie/list`
         try {
-            return await this.makeRequest<{ genre: Genre[] }>(endpoint)
+            return await this.makeRequest<{ genres: Genre[] }>(endpoint)
         } catch (error) {
             console.error('Error fetching genres:', error);
             throw error;
         }
     }
+    async getMoviesByGenre(genreId: number, page: number = 1): Promise<ApiResponse<Movie>> {
+        const endpoint = `/discover/movie${this.buildQueryParams({
+            with_genres: genreId,
+            page,
+            sort_by: 'popularity.desc',
+            include_adult: false,
+        })}`;
+        try {
+            return await this.makeRequest<ApiResponse<Movie>>(endpoint);
+        } catch (error) {
+            console.error('Error fetching movies by genre:', error);
+            throw error;
+        }
+    }
+
     getImageUrl(imagePath: string | null, size: string = 'w500'): string {
         if (!imagePath) return '/placeholder.png';
         return `${this.imageBaseUrl}${size}${imagePath}`;

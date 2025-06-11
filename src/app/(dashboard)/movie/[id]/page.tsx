@@ -1,6 +1,6 @@
 'use client';
 import CastCard from "@/components/custom-ui/movie/castcard";
-import MovieLoadingSkeleton from "@/components/custom-ui/movie/movieloading";
+import MovieLoadingSkeleton from "@/components/custom-ui/skeletons/movieskeleton";
 import movieService from "@/lib/api/movieService";
 import {  MovieDetails } from "@/lib/api/types";
 import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";

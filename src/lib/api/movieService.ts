@@ -33,7 +33,7 @@ class MovieService {
         return response.json()
     }
 
-    private buildQueryParams(params: Record<string, any> = {}): string {
+    private buildQueryParams(params: Record<string, string | number | boolean | undefined> = {}): string {
         const queryParams = new URLSearchParams();
 
         Object.entries(params).forEach(([key, value]) => {
@@ -128,7 +128,7 @@ class MovieService {
             throw error;
         }
     }
-    async getMoviesByGenre(genreId: number, page: number = 1): Promise<ApiResponse<Movie>> {
+    async getMoviesByGenre(genreId: string, page: number = 1): Promise<ApiResponse<Movie>> {
         const endpoint = `/discover/movie${this.buildQueryParams({
             with_genres: genreId,
             page,

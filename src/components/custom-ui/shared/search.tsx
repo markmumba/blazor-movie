@@ -1,9 +1,10 @@
 import movieService from "@/lib/api/movieService";
 import { Movie } from "@/lib/api/types";
 import { formatYear } from "@/lib/utils";
-import { Clock, Link as LinkIcon, Search, TrendingUp } from "lucide-react";
+import { Clock, Search, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function SearchComponent({ className }: { className?: string }) {
     const [query, setQuery] = useState("");
@@ -47,6 +48,7 @@ function SearchComponent({ className }: { className?: string }) {
                     setIsOpen(true);
                 } catch (error) {
                     setResults([]);
+                    console.error(error);
                 } finally {
                     setIsLoading(false);
                 }
@@ -76,7 +78,6 @@ function SearchComponent({ className }: { className?: string }) {
     }
 
     const handleSelectMovie = (movie: Movie) => {
-        console.log('Movie selected:', movie.title);
         const newRecentSearches = [movie.title, ...recentSearches.filter(s => s !== movie.title)].slice(0, 5);
         setRecentSearches(newRecentSearches)
         localStorage.setItem('recent-movie-searches', JSON.stringify(newRecentSearches));
@@ -132,7 +133,7 @@ function SearchComponent({ className }: { className?: string }) {
                                 {results.length > 0 ? (
                                     <>
                                         <div className="text-xs text-muted-foreground mb-2 px-2">
-                                            Search results for "{query}"
+                                            Search results for &quot;{query}&quot;
                                         </div>
                                         {results.map((movie) => (
                                             <Link
@@ -141,13 +142,15 @@ function SearchComponent({ className }: { className?: string }) {
                                                 onClick={() => handleSelectMovie(movie)}
                                                 className="flex items-center gap-3 p-2 hover:bg-accent rounded-md transition-colors"
                                             >
-                                                <img
+                                                <Image
                                                     src={movieService.getImageUrl(movie.poster_path)}
                                                     alt={movie.title}
                                                     className="w-8 h-12 object-cover rounded flex-shrink-0"
                                                     onError={(e) => {
                                                         e.currentTarget.src = '/placeholder-movie.jpg';
                                                     }}
+                                                    width={1000}
+                                                    height={1000}
                                                 />
                                                 <div className="flex-1 min-w-0">
                                                     <div className="font-medium text-sm truncate">{movie.title}</div>
@@ -160,7 +163,7 @@ function SearchComponent({ className }: { className?: string }) {
                                     </>
                                 ) : !isLoading && (
                                     <div className="p-4 text-center text-muted-foreground text-sm">
-                                        No movies found for "{query}"
+                                        No movies found for &quot;{query}&quot;
                                     </div>
                                 )}
                             </div>

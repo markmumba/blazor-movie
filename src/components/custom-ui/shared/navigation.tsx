@@ -1,10 +1,13 @@
 'use client';
-import { BookmarkPlus, Film, Home, Menu, Search, User } from "lucide-react";
+import { BookmarkPlus, Film, Home, LogOut, Menu, Search, User } from "lucide-react";
 import Link from "next/link";
 import SearchComponent from "./search";
 import { GenresPopover } from "./genres-popover";
+import { useUser } from "@auth0/nextjs-auth0";
 
 export default function Navigation() {
+    const { user, isLoading } = useUser();
+
     return (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
             <div className="container mx-auto max-w-7xl px-4">
@@ -45,9 +48,36 @@ export default function Navigation() {
                         </button>
 
                         {/* User Profile */}
-                        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9">
-                            <User className="h-4 w-4" />
-                        </button>
+                        {!isLoading && (
+                            <>
+                                {user ? (
+                                    <div className="flex items-center space-x-2">
+                                        <Link
+                                            href="/profile"
+                                            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                                        >
+                                            <User className="h-4 w-4 mr-2" />
+                                            Profile
+                                        </Link>
+                                        <a
+                                            href="/auth/logout"
+                                            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                                        >
+                                            <LogOut className="h-4 w-4 mr-2" />
+                                            Logout
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <a
+                                        href="/auth/login?returnTo=/home"
+                                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                                    >
+                                        <User className="h-4 w-4 mr-2" />
+                                        Login
+                                    </a>
+                                )}
+                            </>
+                        )}
 
                         {/* Mobile Menu */}
                         <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 md:hidden">
@@ -86,13 +116,32 @@ export default function Navigation() {
                         <BookmarkPlus className="h-4 w-4" />
                         <span>Watchlist</span>
                     </Link>
-                    <Link
-                        href="/profile"
-                        className="flex flex-col items-center space-y-1 p-2 text-xs hover:bg-accent rounded-md transition-colors"
-                    >
-                        <User className="h-4 w-4" />
-                        <span>Profile</span>
-                    </Link>
+                    {user ? (
+                        <>
+                            <Link
+                                href="/profile"
+                                className="flex flex-col items-center space-y-1 p-2 text-xs hover:bg-accent rounded-md transition-colors"
+                            >
+                                <User className="h-4 w-4" />
+                                <span>Profile</span>
+                            </Link>
+                            <a
+                                href="/api/auth/logout"
+                                className="flex flex-col items-center space-y-1 p-2 text-xs hover:bg-accent rounded-md transition-colors"
+                            >
+                                <LogOut className="h-4 w-4" />
+                                <span>Logout</span>
+                            </a>
+                        </>
+                    ) : (
+                        <a
+                            href="/auth/login?returnTo=/home"
+                            className="flex flex-col items-center space-y-1 p-2 text-xs hover:bg-accent rounded-md transition-colors"
+                        >
+                            <User className="h-4 w-4" />
+                            <span>Login</span>
+                        </a>
+                    )}
                 </nav>
             </div>
         </header>

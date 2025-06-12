@@ -29,7 +29,7 @@ export default function GenrePage({ params }: PageProps) {
                 if (genre) {
                     setGenreName(genre.name);
                 }
-                const response = await movieService.getMoviesByGenre(parseInt(id));
+                const response = await movieService.getMoviesByGenre(id);
                 setMovies(response.results);
             } catch (error) {
                 console.error('Error fetching movies by genre:', error);

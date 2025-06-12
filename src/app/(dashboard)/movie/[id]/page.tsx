@@ -1,22 +1,25 @@
 'use client';
+import MovieCard from "@/components/custom-ui/home/moviecard";
 import CastCard from "@/components/custom-ui/movie/castcard";
 import MovieLoadingSkeleton from "@/components/custom-ui/skeletons/movieskeleton";
 import movieService from "@/lib/api/movieService";
-import {  MovieDetails } from "@/lib/api/types";
+import { Movie, MovieDetails } from "@/lib/api/types";
 import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
 import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { use, useEffect, useState } from "react";
 
 interface PageProps {
-    params: {
+    params: Promise<{
         id: string;
-    }
+    }>
 }
 
 function MovieDetailsPage({ params }: PageProps) {
-    const { id } = params;
+    const { id } = use(params);
 
     const [movie, setMovie] = useState<MovieDetails | null>(null);
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -34,6 +37,30 @@ function MovieDetailsPage({ params }: PageProps) {
         }
         fetchMovieDetails();
     }, [id]);
+
+    useEffect(() => {
+        if (!movie?.genres) return;
+
+        const genre_ids = movie.genres.map((genre) => genre.id).join(',');
+        if (!genre_ids) return;
+        console.log(genre_ids);
+
+        const stored = JSON.parse(localStorage.getItem('clickedGenres') || '[]');
+        if (stored[stored.length - 1] !== genre_ids) {
+            const updated = [...stored, genre_ids];
+            localStorage.setItem('clickedGenres', JSON.stringify(updated));
+        }
+
+        const fetchMoviesByGenre = async () => {
+            try {
+                const movies = await movieService.getMoviesByGenre(genre_ids);
+                setMovies(movies.results);
+            } catch (error) {
+                console.error('Error fetching movies by genre:', error);
+            }
+        }
+        fetchMoviesByGenre();
+    }, [movie?.genres]);
 
     if (isLoading) {
         return <MovieLoadingSkeleton />;
@@ -61,10 +88,12 @@ function MovieDetailsPage({ params }: PageProps) {
         <div className="min-h-screen bg-background">
             <div className="relative">
                 <div className="aspect-[16/9] overflow-hidden">
-                    <img
+                    <Image
                         src={movieService.getImageUrl(movie.backdrop_path, 'w1280')}
                         alt={movie.title}
                         className="object-cover w-full h-full"
+                        width={1000}
+                        height={1000}
                     />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
@@ -83,19 +112,20 @@ function MovieDetailsPage({ params }: PageProps) {
                 <div className="grid md:grid-cols-[300px_1fr] gap-8">
                     <div className="mx-auto md:mx-0">
                         <div className="aspect-[2/3] overflow-hidden rounded-lg shadow-2xl ring-1 ring-border">
-                            <img
+                            <Image
                                 src={movieService.getImageUrl(movie.poster_path, 'w500')}
                                 alt={movie.title}
                                 className="object-cover w-full h-full"
+                                width={1000}
+                                height={1000}
                             />
                         </div>
                     </div>
-
                     <div className="space-y-8">
                         <div className="space-y-3">
                             <h1 className="text-4xl font-bold tracking-tight">{movie.title}</h1>
                             {movie.tagline && (
-                                <p className="text-lg text-muted-foreground italic">"{movie.tagline}"</p>
+                                <p className="text-lg text-muted-foreground italic">&quot;{movie.tagline}&quot;</p>
                             )}
                         </div>
 
@@ -181,10 +211,12 @@ function MovieDetailsPage({ params }: PageProps) {
                                 <div key={company.id} className="flex items-center space-x-4 py-2 border-b">
                                     <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center ring-1 ring-border">
                                         {company.logo_path ? (
-                                            <img
+                                            <Image
                                                 src={movieService.getImageUrl(company.logo_path, 'w92')}
                                                 alt={company.name}
                                                 className="w-8 h-8 object-contain"
+                                                width={1000}
+                                                height={1000}
                                             />
                                         ) : (
                                             <Globe className="w-5 h-5 text-muted-foreground" />
@@ -221,6 +253,14 @@ function MovieDetailsPage({ params }: PageProps) {
                         </div>
                     </div>
                 )}
+                <div className="space-y-6 pt-8 border-t">
+                    <h2 className="text-xl font-semibold">Movies you might like</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {movies.slice(0, 8).map((movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import movieService from "@/lib/api/movieService";
 import { Movie } from "@/lib/api/types";
 import { formatDate } from "@/lib/utils";
 import { Calendar, Clock, Play, Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -11,13 +12,15 @@ function MovieCard({ movie }: { movie: Movie }) {
         <Link href={`/movie/${movie.id}`}>
             <div className="group relative overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300">
                 <div className="relative aspect-[2/3] overflow-hidden">
-                    <img
+                    <Image
                         src={movieService.getImageUrl(movie.poster_path)}
                         alt={movie.title}
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
-                            e.currentTarget.src = '/placeholder-movie.jpg';
+                            e.currentTarget.src = '/placeholder-person.jpg';
                         }}
+                        width={1000}
+                        height={1000}
                     />
 
                     <div className="absolute top-2 right-2">

@@ -128,7 +128,7 @@ class MovieService {
             throw error;
         }
     }
-    async getMoviesByGenre(genreId: number, page: number = 1): Promise<ApiResponse<Movie>> {
+    async getMoviesByGenre(genreId: string, page: number = 1): Promise<ApiResponse<Movie>> {
         const endpoint = `/discover/movie${this.buildQueryParams({
             with_genres: genreId,
             page,

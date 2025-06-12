@@ -1,22 +1,24 @@
 'use client';
+import MovieCard from "@/components/custom-ui/home/moviecard";
 import CastCard from "@/components/custom-ui/movie/castcard";
 import MovieLoadingSkeleton from "@/components/custom-ui/skeletons/movieskeleton";
 import movieService from "@/lib/api/movieService";
-import {  MovieDetails } from "@/lib/api/types";
-import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
+import { Movie, MovieDetails } from "@/lib/api/types";
+import { formatCurrency, formatDate, formatRuntime, getMostFrequentGenre } from "@/lib/utils";
 import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface PageProps {
-    params: {
+    params: Promise<{
         id: string;
-    }
+    }>
 }
 
 function MovieDetailsPage({ params }: PageProps) {
-    const { id } = params;
+    const { id } = use(params);
 
     const [movie, setMovie] = useState<MovieDetails | null>(null);
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -34,6 +36,30 @@ function MovieDetailsPage({ params }: PageProps) {
         }
         fetchMovieDetails();
     }, [id]);
+
+    useEffect(() => {
+        if (!movie?.genres) return;
+
+        const genre_ids = movie.genres.map((genre) => genre.id).join(',');
+        if (!genre_ids) return;
+        console.log(genre_ids);
+
+        const stored = JSON.parse(localStorage.getItem('clickedGenres') || '[]');
+        if (stored[stored.length - 1] !== genre_ids) {
+            const updated = [...stored, genre_ids];
+            localStorage.setItem('clickedGenres', JSON.stringify(updated));
+        }
+
+        const fetchMoviesByGenre = async () => {
+            try {
+                const movies = await movieService.getMoviesByGenre(genre_ids);
+                setMovies(movies.results);
+            } catch (error) {
+                console.error('Error fetching movies by genre:', error);
+            }
+        }
+        fetchMoviesByGenre();
+    }, [movie?.genres]);
 
     if (isLoading) {
         return <MovieLoadingSkeleton />;
@@ -221,6 +247,14 @@ function MovieDetailsPage({ params }: PageProps) {
                         </div>
                     </div>
                 )}
+                <div className="space-y-6 pt-8 border-t">
+                    <h2 className="text-xl font-semibold">Movies you might like</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {movies.slice(0, 8).map((movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

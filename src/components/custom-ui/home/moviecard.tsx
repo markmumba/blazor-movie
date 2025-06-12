@@ -16,7 +16,7 @@ function MovieCard({ movie }: { movie: Movie }) {
                         alt={movie.title}
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
-                            e.currentTarget.src = '/placeholder-movie.jpg';
+                            e.currentTarget.src = '/placeholder-person.jpg';
                         }}
                     />
 

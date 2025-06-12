@@ -76,7 +76,6 @@ function SearchComponent({ className }: { className?: string }) {
     }
 
     const handleSelectMovie = (movie: Movie) => {
-        console.log('Movie selected:', movie.title);
         const newRecentSearches = [movie.title, ...recentSearches.filter(s => s !== movie.title)].slice(0, 5);
         setRecentSearches(newRecentSearches)
         localStorage.setItem('recent-movie-searches', JSON.stringify(newRecentSearches));

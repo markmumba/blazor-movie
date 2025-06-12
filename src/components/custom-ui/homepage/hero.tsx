@@ -1,9 +1,11 @@
-import React from 'react';
+"use client";
 import { Play, Search, User } from 'lucide-react';
 import Link from 'next/link';
 import AnimatedPosters from './animated-posters';
+import { useUser } from '@auth0/nextjs-auth0';
 
 const HeroSection = () => {
+    const { user } = useUser();
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-100 overflow-hidden">
             <div className="absolute inset-0 opacity-30">
@@ -43,14 +45,23 @@ const HeroSection = () => {
                         Search Movies
                     </button>
                 </div>
-                <div className="mt-4 animate-fade-in-delay-3">
+                <div className="mt-4 animate-fade-in-delay-3"> 
+                    {user ? (
+                        <Link href="/profile">
+                            <button className="bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl shadow-gray-500/40">
+                                <User className="w-5 h-5 mr-2" />
+                                Profile
+                            </button>
+                        </Link>
+                    ) : (
                     <a
                         href="/auth/login?returnTo=/home"
                         className="bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl shadow-gray-500/40"
                     >
                         <User className="w-5 h-5 mr-2" />
-                        Login
-                    </a>
+                            Login
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

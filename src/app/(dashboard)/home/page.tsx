@@ -30,7 +30,7 @@ function Homepage() {
                 setNowPlayingMovies(nowPlayingResponse.results);
 
                 // Fetch recommended movies based on most frequent genre
-                const recommendedGenre = getMostFrequentGenre(5);
+                const recommendedGenre = getMostFrequentGenre(3);
                 if (recommendedGenre) {
                     const recommendedResponse = await movieService.getMoviesByGenre(recommendedGenre);
                     setRecommendedMovies(recommendedResponse.results);

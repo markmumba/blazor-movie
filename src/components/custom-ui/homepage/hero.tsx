@@ -1,39 +1,45 @@
 "use client";
 import { Play, User } from 'lucide-react';
 import Link from 'next/link';
-import AnimatedPosters from './animated-posters';
 import { useUser } from '@auth0/nextjs-auth0';
+import Image from 'next/image';
+
 
 const HeroSection = () => {
     const { user } = useUser();
     return (
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-            {/* Animated Posters as background with dark overlay */}
-            <div className="absolute inset-0 z-0">
-                <div className="grid grid-cols-3 gap-4 p-4">
-                    <AnimatedPosters />
-                </div>
-                <div className="absolute inset-0 bg-black/60" />
-            </div>
+        <section className="relative min-h-screen flex items-center justify-center bg-black">
+            {/* Background video */}
+            <video
+                className="absolute inset-0 w-full h-full object-cover z-0"
+                src="/hero-2.mov"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black z-10" />
 
-            {/* Minimal centered content */}
-            <div className="relative z-10 max-w-2xl w-full mx-auto px-8 py-16 text-center space-y-6 bg-black/40 backdrop-blur-sm rounded-xl border border-white/20 shadow-2xl">
-                <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg">
-                    Welcome to <span className="text-primary-400">Blazor Movies</span>
+            {/* Content */}
+            <div className="relative z-20 flex flex-col items-center justify-center text-center px-4">
+                <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-lg">
+                    Blazor Movies
                 </h1>
-                <p className="text-lg md:text-2xl text-white/80 font-medium drop-shadow">
+                <p className="text-lg md:text-2xl text-white/90 mb-10 max-w-2xl">
                     Dive into a world of movies. Discover, search, and get recommendations tailored just for you.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/home">
-                        <button className="bg-gradient-to-r from-primary-600 to-primary-400 hover:from-primary-700 hover:to-primary-500 border text-white px-10 py-4 text-xl font-bold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl w-full sm:w-auto">
-                            <Play className="w-6 h-6 mr-2" />
+                        <button className="bg-white text-black px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:bg-gray-200 transition flex items-center justify-center">
+                            <Play className="w-5 h-5 mr-2" />
                             Start Exploring
                         </button>
                     </Link>
                     {user ? (
                         <Link href="/profile">
-                            <button className="bg-white/20 text-white px-10 py-4 text-lg font-bold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl w-full sm:w-auto">
+                            <button className="bg-black/70 text-white px-8 py-3 text-lg font-semibold rounded-full border border-white shadow-lg hover:bg-black/90 transition flex items-center justify-center">
                                 <User className="w-5 h-5 mr-2" />
                                 Profile
                             </button>
@@ -41,7 +47,7 @@ const HeroSection = () => {
                     ) : (
                         <a
                             href="/auth/login?returnTo=/home"
-                            className="bg-white/20 text-white px-10 py-4 text-lg font-bold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl w-full sm:w-auto"
+                            className="bg-black/70 text-white px-8 py-3 text-lg font-semibold rounded-full border border-white shadow-lg hover:bg-black/90 transition flex items-center justify-center"
                         >
                             <User className="w-5 h-5 mr-2" />
                             Login
@@ -49,7 +55,7 @@ const HeroSection = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

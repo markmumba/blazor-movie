@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Search } from 'lucide-react';
+import { Play, Search, User } from 'lucide-react';
 import Link from 'next/link';
 import AnimatedPosters from './animated-posters';
 
@@ -42,6 +42,15 @@ const HeroSection = () => {
                         <Search className="w-5 h-5 mr-2" />
                         Search Movies
                     </button>
+                </div>
+                <div className="mt-4 animate-fade-in-delay-3">
+                    <a
+                        href="/auth/login?returnTo=/home"
+                        className="bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200 flex items-center justify-center hover:scale-105 shadow-xl shadow-gray-500/40"
+                    >
+                        <User className="w-5 h-5 mr-2" />
+                        Login
+                    </a>
                 </div>
             </div>
         </div>

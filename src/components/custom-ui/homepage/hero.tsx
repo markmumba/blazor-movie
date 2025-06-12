@@ -2,7 +2,6 @@
 import { Play, User } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
-import Image from 'next/image';
 
 
 const HeroSection = () => {

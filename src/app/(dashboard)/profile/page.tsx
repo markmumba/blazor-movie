@@ -2,6 +2,7 @@
 
 import { useUser } from '@auth0/nextjs-auth0';
 import { ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ProfilePage() {
@@ -70,10 +71,12 @@ export default function ProfilePage() {
                             <div className="flex flex-col items-center space-y-4">
                                 <div className="relative h-24 w-24 overflow-hidden rounded-full">
                                     {user.picture ? (
-                                        <img
+                                        <Image
                                             src={user.picture}
                                             alt={user.name || 'Profile picture'}
                                             className="h-full w-full object-cover"
+                                            width={1000}
+                                            height={1000}
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">

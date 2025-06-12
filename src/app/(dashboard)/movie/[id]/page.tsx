@@ -4,8 +4,9 @@ import CastCard from "@/components/custom-ui/movie/castcard";
 import MovieLoadingSkeleton from "@/components/custom-ui/skeletons/movieskeleton";
 import movieService from "@/lib/api/movieService";
 import { Movie, MovieDetails } from "@/lib/api/types";
-import { formatCurrency, formatDate, formatRuntime, getMostFrequentGenre } from "@/lib/utils";
+import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
 import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
+import Image from "next/image";
 import { use, useEffect, useState } from "react";
 
 interface PageProps {
@@ -87,10 +88,12 @@ function MovieDetailsPage({ params }: PageProps) {
         <div className="min-h-screen bg-background">
             <div className="relative">
                 <div className="aspect-[16/9] overflow-hidden">
-                    <img
+                    <Image
                         src={movieService.getImageUrl(movie.backdrop_path, 'w1280')}
                         alt={movie.title}
                         className="object-cover w-full h-full"
+                        width={1000}
+                        height={1000}
                     />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
@@ -109,19 +112,20 @@ function MovieDetailsPage({ params }: PageProps) {
                 <div className="grid md:grid-cols-[300px_1fr] gap-8">
                     <div className="mx-auto md:mx-0">
                         <div className="aspect-[2/3] overflow-hidden rounded-lg shadow-2xl ring-1 ring-border">
-                            <img
+                            <Image
                                 src={movieService.getImageUrl(movie.poster_path, 'w500')}
                                 alt={movie.title}
                                 className="object-cover w-full h-full"
+                                width={1000}
+                                height={1000}
                             />
                         </div>
                     </div>
-
                     <div className="space-y-8">
                         <div className="space-y-3">
                             <h1 className="text-4xl font-bold tracking-tight">{movie.title}</h1>
                             {movie.tagline && (
-                                <p className="text-lg text-muted-foreground italic">"{movie.tagline}"</p>
+                                <p className="text-lg text-muted-foreground italic">&quot;{movie.tagline}&quot;</p>
                             )}
                         </div>
 
@@ -207,10 +211,12 @@ function MovieDetailsPage({ params }: PageProps) {
                                 <div key={company.id} className="flex items-center space-x-4 py-2 border-b">
                                     <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center ring-1 ring-border">
                                         {company.logo_path ? (
-                                            <img
+                                            <Image
                                                 src={movieService.getImageUrl(company.logo_path, 'w92')}
                                                 alt={company.name}
                                                 className="w-8 h-8 object-contain"
+                                                width={1000}
+                                                height={1000}
                                             />
                                         ) : (
                                             <Globe className="w-5 h-5 text-muted-foreground" />

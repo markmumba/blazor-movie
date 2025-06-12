@@ -33,7 +33,7 @@ class MovieService {
         return response.json()
     }
 
-    private buildQueryParams(params: Record<string, any> = {}): string {
+    private buildQueryParams(params: Record<string, string | number | boolean | undefined> = {}): string {
         const queryParams = new URLSearchParams();
 
         Object.entries(params).forEach(([key, value]) => {

@@ -38,7 +38,9 @@ export function most_repeated_genre(array: string[]) {
   }, {});
 
   const most_repeated_genre_id = Object.entries(genre_count)
-    .filter(([_, count]) => count >= 5)
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .filter(([genre, count]) => count >= 5)
     .reduce((max, current) => {
       if (!max.length || genre_count[current[0]] > genre_count[max[0]]) {
         return current;

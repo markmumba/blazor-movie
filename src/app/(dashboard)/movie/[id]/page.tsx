@@ -44,7 +44,6 @@ function MovieDetailsPage({ params }: PageProps) {
 
         const genre_ids = movie.genres.map((genre) => genre.id).join(',');
         if (!genre_ids) return;
-        console.log(genre_ids);
 
         const stored = JSON.parse(localStorage.getItem('clickedGenres') || '[]');
         if (stored[stored.length - 1] !== genre_ids) {

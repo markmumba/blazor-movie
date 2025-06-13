@@ -144,7 +144,7 @@ class MovieService {
     }
 
     getImageUrl(imagePath: string | null, size: string = 'w500'): string {
-        if (!imagePath) return '/placeholder.png';
+        if (!imagePath) return '/placeholder-person.jpg';
         return `${this.imageBaseUrl}${size}${imagePath}`;
     }
 

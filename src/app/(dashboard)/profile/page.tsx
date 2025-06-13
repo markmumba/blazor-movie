@@ -135,13 +135,6 @@ export default function ProfilePage() {
                                 </div>
                             </dl>
                         </div>
-
-                        <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-                            <h3 className="text-lg font-semibold mb-4">Your Watchlist</h3>
-                            <p className="text-sm text-muted-foreground">
-                                Your watchlist is empty. Start adding movies to keep track of what you want to watch!
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

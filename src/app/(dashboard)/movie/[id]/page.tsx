@@ -22,6 +22,7 @@ function MovieDetailsPage({ params }: PageProps) {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isAdded, setIsAdded] = useState(false);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -165,9 +166,22 @@ function MovieDetailsPage({ params }: PageProps) {
                                 <Play className="h-4 w-4 mr-2" />
                                 Watch Trailer
                             </button>
-                            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                            <button
+                                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 relative duration-300 ${isAdded ? 'scale-110' : 'scale-100'}`}
+                                onClick={() => {
+                                    const stored = localStorage.getItem('watchlist');
+                                    let watchlist: number[] = stored ? JSON.parse(stored) : [];
+                                    const movieId = Number(id);
+                                    if (!watchlist.includes(movieId)) {
+                                        watchlist.push(movieId);
+                                        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                                    }
+                                    setIsAdded(true);
+                                    setTimeout(() => setIsAdded(false), 300);
+                                }}
+                            >
                                 <BookmarkPlus className="h-4 w-4 mr-2" />
-                                Add to Watchlist
+                                {isAdded ? "Added!" : "Add to Watchlist"}
                             </button>
                             <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
                                 <Heart className="h-4 w-4" />

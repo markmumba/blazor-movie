@@ -3,17 +3,17 @@ import { useState } from "react";
 import SparklingStar from "./stars";
 
 // Main button component
-const SparklingButton = () => {
+const SparklingButton = ({ movieId }: { movieId: number }) => {
     const [isAdded, setIsAdded] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [stars, setStars] = useState<{ id: number; key: string }[]>([]);
     const [starCounter, setStarCounter] = useState(0);
 
+
     const handleClick = () => {
         // Your existing localStorage logic
         const stored = localStorage.getItem('watchlist');
         const watchlist = stored ? JSON.parse(stored) : [];
-        const movieId = 123; // Replace with your actual movie ID
 
         if (!watchlist.includes(movieId)) {
             watchlist.push(movieId);
@@ -50,7 +50,7 @@ const SparklingButton = () => {
     };
 
     return (
-        <div className="p-8 flex flex-col items-center gap-8">
+        <div className="relative sparkle-container">
             <style jsx>{`
           @keyframes sparkle {
             0% {
@@ -85,30 +85,23 @@ const SparklingButton = () => {
           }
         `}</style>
 
-            <div className="relative sparkle-container">
-                <button
-                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 relative ${isAdded ? 'scale-110 animate-pulse-glow' : 'scale-100'
-                        } ${isAnimating ? 'bg-blue-50 border-blue-300' : ''}`}
-                    onClick={handleClick}
-                >
-                    <BookmarkPlus className="h-4 w-4 mr-2" />
-                    {isAdded ? "Added!" : "Add to Watchlist"}
-                </button>
+            <button
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 relative ${isAdded ? 'scale-110 animate-pulse-glow' : 'scale-100'
+                    } ${isAnimating ? 'bg-blue-50 border-blue-300' : ''}`}
+                onClick={handleClick}
+            >
+                <BookmarkPlus className="h-4 w-4 mr-2" />
+                {isAdded ? "Added!" : "Add to Watchlist"}
+            </button>
 
-                {/* Sparkling stars */}
-                {stars.map((star) => (
-                    <SparklingStar
-                        key={star.key}
-                        id={star.id}
-                        onComplete={removeStar}
-                    />
-                ))}
-            </div>
-
-            <div className="text-sm text-gray-600 text-center max-w-md">
-                <p>The first button uses React state to manage individual star components.</p>
-                <p className="mt-2">The second button uses pure CSS animations for a lighter implementation.</p>
-            </div>
+            {/* Sparkling stars */}
+            {stars.map((star) => (
+                <SparklingStar
+                    key={star.key}
+                    id={star.id}
+                    onComplete={removeStar}
+                />
+            ))}
         </div>
     );
 };

@@ -2,21 +2,50 @@
 import { Play, User } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
+import Image from 'next/image';
+import { useEffect, useState } from "react";
+import ShootingStar from './shootingstar';
+
 
 
 const HeroSection = () => {
     const { user } = useUser();
+    const [stars, setStars] = useState<{ id: number; top: string }[]>([]);
+
+    useEffect(() => {
+        let starId = 0;
+        let isMounted = true;
+
+        function addStar() {
+            if (!isMounted) return;
+            const top = `${10 + Math.random() * 70}%`; // random vertical position
+            setStars((prev) => [...prev, { id: starId++, top }]);
+            setTimeout(addStar, 1200 + Math.random() * 2000); // random interval
+        }
+
+        addStar();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (stars.length === 0) return;
+        // Remove the star after its animation
+        const timer = setTimeout(() => {
+            setStars((prev) => prev.slice(1));
+        }, 1300);
+        return () => clearTimeout(timer);
+    }, [stars]);
+
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-black">
-            <video
-                className="absolute inset-0 w-full h-full object-cover z-0"
-                src="/hero-2.mov"
-
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
+            <Image
+                src="/earth.jpg"
+                alt="Hero Section"
+                fill
+                className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black z-10" />
 
@@ -55,6 +84,9 @@ const HeroSection = () => {
             <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-base md:text-lg text-white/90 max-w-2xl px-4 w-full text-center z-30 font-medium">
                 &quot;Perhaps the whole of life is an act of letting go, but what always hurts the most is not taking a moment to say goodbye.&quot;
             </p>
+            {stars.map((star) => (
+                <ShootingStar key={star.id} top={star.top} keyId={star.id} />
+            ))}
         </section>
     );
 };

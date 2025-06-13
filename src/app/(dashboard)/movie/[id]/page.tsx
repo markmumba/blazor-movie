@@ -170,7 +170,7 @@ function MovieDetailsPage({ params }: PageProps) {
                                 className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 relative ${isAdded ? 'scale-110' : 'scale-100'}`}
                                 onClick={() => {
                                     const stored = localStorage.getItem('watchlist');
-                                    let watchlist: number[] = stored ? JSON.parse(stored) : [];
+                                    const watchlist: number[] = stored ? JSON.parse(stored) : [];
                                     const movieId = Number(id);
                                     if (!watchlist.includes(movieId)) {
                                         watchlist.push(movieId);

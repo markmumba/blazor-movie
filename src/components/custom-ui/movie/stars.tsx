@@ -1,10 +1,7 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
-// Star component for the sparkling effect
 
-import { useState } from "react";
-
-const SparklingStar = ({ id, onComplete }: { id: number, onComplete: (id: number) => void }) => {
+function SparklingStar  ({ id, onComplete }: { id: number, onComplete: (id: number) => void })  {
     const [position] = useState({
       x: Math.random() * 100,
       y: Math.random() * 100,

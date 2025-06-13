@@ -2,8 +2,9 @@ import { BookmarkPlus } from "lucide-react";
 import { useState } from "react";
 import SparklingStar from "./stars";
 
-// Main button component
-const SparklingButton = ({ movieId }: { movieId: number }) => {
+// Main button componen
+function AddToWatchlistButton  ({ movieId }: { movieId: number })  {
+
     const [isAdded, setIsAdded] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [stars, setStars] = useState<{ id: number; key: string }[]>([]);
@@ -107,4 +108,4 @@ const SparklingButton = ({ movieId }: { movieId: number }) => {
 };
 
 
-export default SparklingButton;
+export default AddToWatchlistButton;

@@ -1,12 +1,12 @@
 'use client';
 import MovieCard from "@/components/custom-ui/home/moviecard";
 import CastCard from "@/components/custom-ui/movie/castcard";
-import SparklingButton from "@/components/custom-ui/movie/sparklingbutton";
+import AddToWatchlistButton from "@/components/custom-ui/movie/addtowatchlist";
 import MovieLoadingSkeleton from "@/components/custom-ui/skeletons/movieskeleton";
 import movieService from "@/lib/api/movieService";
 import { Movie, MovieDetails } from "@/lib/api/types";
 import { formatCurrency, formatDate, formatRuntime } from "@/lib/utils";
-import { ArrowLeft, BookmarkPlus, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Globe, Heart, Play, Share2, Star } from "lucide-react";
 import Image from "next/image";
 import { use, useEffect, useState } from "react";
 
@@ -23,7 +23,6 @@ function MovieDetailsPage({ params }: PageProps) {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [isAdded, setIsAdded] = useState(false);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -166,7 +165,7 @@ function MovieDetailsPage({ params }: PageProps) {
                                 <Play className="h-4 w-4 mr-2" />
                                 Watch Trailer
                             </button>
-                            <SparklingButton movieId={Number(id)} />
+                            <AddToWatchlistButton movieId={Number(id)} />
                             <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10">
                                 <Heart className="h-4 w-4" />
                             </button>

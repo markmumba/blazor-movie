@@ -1,24 +1,38 @@
-name: Deploy to Server
+name: Deploy to Production
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [ main ]
 
 jobs:
-    deploy:
-        runs-on: ubuntu-22.04
-        steps:
-            - name: Deploy to server
-              uses: appleboy/ssh-action@master
-              with:
-                host: ${{ secrets.SERVER_HOST }}
-                username: ${{ secrets.SERVER_USERNAME}}
-                key: ${{ secrets.SERVER_SSH_KEY }}
-                script: |
-                    cd /var/www/blazor-movies
-                    git pull origin main
-                    npm ci
-                    npm run build
-                    pm2 restart blazor-movie
-                    echo "Deployed successfully"
-
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy to server via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: 22
+        timeout: 30s
+        script: |
+          echo "🚀 Starting deployment..."
+          cd /var/www/blazor-movies
+          echo "📁 Current directory: $(pwd)"
+          
+          echo "📥 Pulling latest code..."
+          git pull origin main
+          
+          echo "📦 Installing dependencies..."
+          npm ci
+          
+          echo "🔨 Building application..."
+          npm run build
+          
+          echo "🔄 Restarting application..."
+          pm2 restart blazor-movies
+          
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 App should be live at: https://blazor-movies.online"

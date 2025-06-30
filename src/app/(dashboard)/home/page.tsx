@@ -1,5 +1,4 @@
 import movieService from "@/lib/api/movieService";
-import { getMostFrequentGenre } from "@/lib/utils";
 import Home from "@/components/custom-ui/home/home";
 
 export default  async function Homepage() {

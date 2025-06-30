@@ -11,7 +11,12 @@ function HomeLoadingSkeleton() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     {[...Array(6)].map((_, index) => (
-                        <div key={index} className="aspect-[2/3] bg-muted animate-pulse rounded-lg" />
+                        <div
+                            key={index}
+                            className="relative overflow-hidden rounded-lg aspect-[2/3] bg-muted"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_1.2s_infinite]"></div>
+                        </div>
                     ))}
                 </div>
             </div>

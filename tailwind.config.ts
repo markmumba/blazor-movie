@@ -20,8 +20,13 @@ const config: Config = {
                 'float': 'float 6s ease-in-out infinite',
                 'twinkle': 'twinkle 4s ease-in-out infinite',
                 'shooting-star': 'shootingStar 3s linear infinite',
+                'shimmer': 'shimmer 1.2s infinite linear'
             },
             keyframes: {
+                shimmer: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100%)' },
+                },
                 grain: {
                     '0%, 100%': { transform: 'translate(0, 0)' },
                     '10%': { transform: 'translate(-5%, -5%)' },

@@ -15,6 +15,8 @@ class MovieService {
         }
     }
     private async makeRequest<T>(endpoint: string): Promise<T> {
+
+
         
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: 'GET',
